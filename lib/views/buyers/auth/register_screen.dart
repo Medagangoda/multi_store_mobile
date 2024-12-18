@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_store_mobile/controllers/auth_controller.dart';
 import 'package:multi_store_mobile/utils/show_snackBar.dart';
 import 'package:multi_store_mobile/views/buyers/auth/login_screen.dart';
@@ -23,25 +27,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _isLoading = false;
 
+  Uint8List? _image;
+
   _signUpUser() async {
     setState(() {
       _isLoading = true;
     });
     if (_formKey.currentState!.validate()) {
-      await _authController.SignUpUsers(email, fullName, phoneNumber, password).whenComplete(() {
+      await _authController.SignUpUsers(email, fullName, phoneNumber, password, _image)
+          .whenComplete(() {
         setState(() {
           _formKey.currentState!.reset();
           _isLoading = false;
         });
-      } );
+      });
 
       return showSnack(context, 'Account has been created');
-    }else{
+    } else {
       setState(() {
         _isLoading = false;
       });
       return showSnack(context, 'please complete details');
     }
+  }
+
+  selectGalleryImage() async {
+    Uint8List im = await _authController.pickProfileImage(ImageSource.gallery);
+
+    setState(() {
+      _image = im;
+    });
+  }
+
+  selectCameraImage() async {
+    Uint8List im = await _authController.pickProfileImage(ImageSource.camera);
+
+    setState(() {
+      _image = im;
+    });
   }
 
   // _signUpUser() async {
@@ -68,9 +91,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Create custmer"s Account',
                   style: TextStyle(fontSize: 20),
                 ),
-                CircleAvatar(
-                  radius: 64,
-                  backgroundColor: Colors.yellow.shade900,
+                Stack(
+                  children: [
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundColor: Colors.yellow.shade900,
+                            backgroundImage: MemoryImage(_image!),
+                          )
+                        : CircleAvatar(
+                            radius: 64,
+                            backgroundColor: Colors.yellow.shade900,
+                            backgroundImage: NetworkImage(
+                                'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'),
+                          ),
+                    Positioned(
+                      right: 5,
+                      top: 5,
+                      child: IconButton(
+                        onPressed: () {
+                          selectGalleryImage();
+                        },
+                        icon: Icon(
+                          CupertinoIcons.photo,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(13.0),
@@ -157,15 +205,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
-                        child: _isLoading ? CircularProgressIndicator(
-                          color: Colors.white,
-                        ): Text(
-                      'Register',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold),
-                    )),
+                        child: _isLoading
+                            ? CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                'Register',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold),
+                              )),
                   ),
                 ),
                 Row(

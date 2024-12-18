@@ -16,7 +16,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late String password;
 
+  bool _isLoading = false;
+
   _loginUsers() async {
+    setState(() {
+      _isLoading = true;
+    });
     if (_formKey.currentState!.validate()) {
     await _authController.loginUsers(email, password);
 
@@ -25,6 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
         return MainScreen();
       }));
       } else {
+        setState(() {
+          _isLoading = false;
+        });
         return showSnack(context, 'most not be empty');
       }
       
@@ -98,7 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.yellow.shade800,
                       borderRadius: BorderRadius.circular(10)),
                   child: Center(
-                    child: Text(
+                    child: _isLoading ? CircularProgressIndicator(color: Colors.white,):
+                    Text(
                       'Login',
                       style: TextStyle(
                         letterSpacing: 5,
