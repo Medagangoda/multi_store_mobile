@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Brand-Bold',
       ),
-      home: RegisterScreen(),
+      home: BuyerRegisterScreen(),
     );
   }
 }
