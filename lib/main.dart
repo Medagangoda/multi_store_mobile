@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multi_store_mobile/vendor/views/screens/main_vendor_screen.dart';
 import 'package:multi_store_mobile/views/buyers/auth/register_screen.dart';
 import 'package:multi_store_mobile/views/buyers/main_screen.dart';
 
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Brand-Bold',
       ),
-      home: BuyerRegisterScreen(),
+      home: MainVendorScreen(),
     );
   }
 }
