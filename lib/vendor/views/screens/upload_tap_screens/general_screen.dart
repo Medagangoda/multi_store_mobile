@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_mobile/provider/product_provider.dart';
+import 'package:provider/provider.dart';
+
+import 'package:intl/intl.dart';
 
 class GeneralScreen extends StatefulWidget {
   @override
@@ -30,8 +34,18 @@ class _GeneralScreenState extends State<GeneralScreen> {
     super.initState();
   }
 
+  String formatedDate(date) {
+    final outPutDateFormate = DateFormat('dd/mm/yyyy');
+
+    final outPutDate = outPutDateFormate.format(date);
+
+    return outPutDate;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ProductProvider _productProvider =
+        Provider.of<ProductProvider>(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -39,6 +53,9 @@ class _GeneralScreenState extends State<GeneralScreen> {
           child: Column(
             children: [
               TextFormField(
+                onChanged: (value) {
+                  _productProvider.getFromData(productName: value);
+                },
                 decoration: InputDecoration(
                   labelText: 'Enter Product Name',
                 ),
@@ -67,11 +84,18 @@ class _GeneralScreenState extends State<GeneralScreen> {
                   items: _categoryList.map<DropdownMenuItem<String>>((e) {
                     return DropdownMenuItem(value: e, child: Text(e));
                   }).toList(),
-                  onChanged: (value) {}),
+                  onChanged: (value) {
+                    setState(() {
+                      _productProvider.getFromData(category: value);
+                    });
+                  }),
               SizedBox(
                 height: 30,
               ),
               TextFormField(
+                onChanged: (value) {
+                  _productProvider.getFromData(description: value);
+                },
                 maxLines: 4,
                 maxLength: 800,
                 decoration: InputDecoration(
@@ -85,12 +109,22 @@ class _GeneralScreenState extends State<GeneralScreen> {
                   TextButton(
                     onPressed: () {
                       showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(5000));
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(5000))
+                          .then((value) {
+                        _productProvider.getFromData(scheduleDate: value);
+                      });
                     },
                     child: Text('Schedule'),
+                  ),
+                  if (_productProvider.productData['scheduleData'] != null)
+                  Text(
+                    
+                    formatedDate(
+                      _productProvider.productData['scheduleDate'],
+                    ),
                   ),
                 ],
               ),
