@@ -53,6 +53,13 @@ class _GeneralScreenState extends State<GeneralScreen> {
           child: Column(
             children: [
               TextFormField(
+                validator: ((value) {
+                  if (value!.isEmpty) {
+                    return 'Enter Product Name';
+                  } else {
+                    return null;
+                  }
+                }),
                 onChanged: (value) {
                   _productProvider.getFromData(productName: value);
                 },
@@ -64,6 +71,13 @@ class _GeneralScreenState extends State<GeneralScreen> {
                 height: 30,
               ),
               TextFormField(
+                validator: ((value) {
+                  if (value!.isEmpty) {
+                    return 'Enter Product Price';
+                  } else {
+                    return null;
+                  }
+                }),
                 decoration: InputDecoration(
                   labelText: 'Enter Product Price',
                 ),

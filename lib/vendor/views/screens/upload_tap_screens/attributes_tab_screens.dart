@@ -15,6 +15,8 @@ class _AttributesTabScreensState extends State<AttributesTabScreens> {
 
   List<String> _sizeList = [];
 
+  bool _isSAVE = false;
+
   @override
   Widget build(BuildContext context) {
     final ProductProvider _productProvider =
@@ -85,17 +87,26 @@ class _AttributesTabScreensState extends State<AttributesTabScreens> {
                     itemBuilder: ((context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.yellow.shade800,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              _sizeList[index],
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _sizeList.removeAt(index);
+
+                              _productProvider.getFromData(sizeList: _sizeList);
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.yellow.shade800,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                _sizeList[index],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
@@ -103,13 +114,22 @@ class _AttributesTabScreensState extends State<AttributesTabScreens> {
                     })),
               ),
             ),
-            if(_sizeList.isNotEmpty)
-          ElevatedButton(
-            onPressed: () {
-              _productProvider.getFromData(sizeList: _sizeList);
-            },
-            child: Text('SAVE'),
-          ),
+          if (_sizeList.isNotEmpty)
+            ElevatedButton(
+              onPressed: () {
+                _productProvider.getFromData(sizeList: _sizeList);
+
+                setState(() {
+                  _isSAVE = true;
+                });
+              },
+              child: Text(
+                _isSAVE? 'SAVE' : 'save',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 3
+                ),),
+            ),
         ],
       ),
     );
