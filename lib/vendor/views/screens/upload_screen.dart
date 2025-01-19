@@ -1,13 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:multi_store_mobile/provider/product_provider.dart';
+import 'package:multi_store_mobile/vendor/views/screens/main_vendor_screen.dart';
 import 'package:multi_store_mobile/vendor/views/screens/upload_tap_screens/attributes_tab_screens.dart';
 import 'package:multi_store_mobile/vendor/views/screens/upload_tap_screens/general_screen.dart';
 import 'package:multi_store_mobile/vendor/views/screens/upload_tap_screens/images_tab_screen.dart';
 import 'package:multi_store_mobile/vendor/views/screens/upload_tap_screens/shipping_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class UploadScreen extends StatelessWidget {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +58,38 @@ class UploadScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                EasyLoading.show(status: 'Please Wait...');
                 if (_formkey.currentState!.validate()) {
-                  print(_productProvider.productData['productName']);
-                  print(_productProvider.productData['productPrice']);
-                  print(_productProvider.productData['quantity']);
-                  print(_productProvider.productData['category']);
-                  print(_productProvider.productData['description']);
-                  print(_productProvider.productData['imageUrlList']);
+                  final productId = Uuid().v4();
+                  await _firestore.collection('product').doc(productId).set({
+                    'productId': productId,
+                    'productName': _productProvider.productData['productName'],
+                    'productPrice':
+                        _productProvider.productData['productPrice'],
+                    'quantity': _productProvider.productData['quantity'],
+                    'category': _productProvider.productData['category'],
+                    'description': _productProvider.productData['description'],
+                    'imageUrl': _productProvider.productData['imageUrlList'],
+                    'scheduleDate':
+                        _productProvider.productData['scheduleDate'],
+                    'chargeShipping':
+                        _productProvider.productData['chargeShipping'],
+                    'shippingCharge':
+                        _productProvider.productData['shippingCharge'],
+                    'brandName': _productProvider.productData['brandName'],
+                    'sizeList': _productProvider.productData['sizeList'],
+                  }) .whenComplete(() {
+                    EasyLoading.dismiss();
+                    _productProvider.clearData();
+                    _formkey.currentState!.reset();
+
+                    Navigator.push(context, 
+                    
+                    MaterialPageRoute(builder: (context) {
+                      return MainVendorScreen();
+                    }));
+                  }) ;
                 }
               },
               child: Text('SAVE'),

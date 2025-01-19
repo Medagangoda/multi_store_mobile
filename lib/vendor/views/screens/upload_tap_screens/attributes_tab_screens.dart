@@ -9,7 +9,9 @@ class AttributesTabScreens extends StatefulWidget {
   State<AttributesTabScreens> createState() => _AttributesTabScreensState();
 }
 
-class _AttributesTabScreensState extends State<AttributesTabScreens> {
+class _AttributesTabScreensState extends State<AttributesTabScreens> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true; //keeping data in screen
   final TextEditingController _sizeController = TextEditingController();
   bool _entered = false;
 
@@ -19,6 +21,7 @@ class _AttributesTabScreensState extends State<AttributesTabScreens> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider _productProvider =
         Provider.of<ProductProvider>(context);
 

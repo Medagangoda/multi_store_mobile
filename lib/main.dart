@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Brand-Bold',
       ),
-      home: MainVendorScreen(),
+      home: MainScreen(),
       builder: EasyLoading.init(),
     );
   }

@@ -13,10 +13,12 @@ class ImagesTabScreen extends StatefulWidget {
   State<ImagesTabScreen> createState() => _ImagesTabScreenState();
 }
 
-class _ImagesTabScreenState extends State<ImagesTabScreen> {
+class _ImagesTabScreenState extends State<ImagesTabScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   final ImagePicker picker = ImagePicker();
   final FirebaseStorage _storage = FirebaseStorage.instance;
-
 
   List<File> _image = [];
 
@@ -36,7 +38,9 @@ class _ImagesTabScreenState extends State<ImagesTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ProductProvider _productProvider = Provider.of<ProductProvider>(context);
+    super.build(context);
+    final ProductProvider _productProvider =
+        Provider.of<ProductProvider>(context);
     return Column(
       children: [
         GridView.builder(
@@ -62,26 +66,31 @@ class _ImagesTabScreenState extends State<ImagesTabScreen> {
                   );
           }),
         ),
-        SizedBox(height: 30,),
+        SizedBox(
+          height: 30,
+        ),
         TextButton(
           onPressed: () async {
             EasyLoading.show(status: 'Saving Image');
-            for(var img in _image) {
-               Reference ref =  _storage.ref().child('productImage').child(Uuid().v4());
+            for (var img in _image) {
+              Reference ref =
+                  _storage.ref().child('productImage').child(Uuid().v4());
 
               await ref.putFile(img).whenComplete(() async {
                 await ref.getDownloadURL().then((value) {
                   setState(() {
                     _imageUrlList.add(value);
-                    _productProvider.getFromData(imageUrlList: _imageUrlList);
-
-                    EasyLoading.dismiss();
                   });
                 });
               });
             }
+            setState(() {
+              _productProvider.getFromData(imageUrlList: _imageUrlList);
+
+              EasyLoading.dismiss();
+            });
           },
-          child:  _image.isNotEmpty? Text('Upload'): Text(''),
+          child: _image.isNotEmpty ? Text('Upload') : Text(''),
         ),
       ],
     );
