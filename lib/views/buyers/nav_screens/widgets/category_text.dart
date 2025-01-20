@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_mobile/views/buyers/nav_screens/widgets/home_products.dart';
 
 class CategoryText extends StatefulWidget {
   @override
@@ -75,6 +76,8 @@ class _CategoryTextState extends State<CategoryText> {
             },
           ),
 
+          if(_selectedCategory!=null)
+          HomeProductWidget(categoryName: _selectedCategory!),
 
         ],
       ),

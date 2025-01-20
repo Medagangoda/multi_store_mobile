@@ -10,7 +10,8 @@ class GeneralScreen extends StatefulWidget {
   State<GeneralScreen> createState() => _GeneralScreenState();
 }
 
-class _GeneralScreenState extends State<GeneralScreen> with AutomaticKeepAliveClientMixin {
+class _GeneralScreenState extends State<GeneralScreen>
+    with AutomaticKeepAliveClientMixin {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   bool get wantKeepAlive => true;
@@ -77,22 +78,43 @@ class _GeneralScreenState extends State<GeneralScreen> with AutomaticKeepAliveCl
                 validator: ((value) {
                   if (value!.isEmpty) {
                     return 'Enter Product Price';
-                  } else {
-                    return null;
+                  } else if (double.tryParse(value) == null) {
+                    return 'Enter a valid number';
                   }
+                  return null;
                 }),
+                onChanged: (value) {
+                  _productProvider.getFromData(
+                      productPrice: double.parse(value));
+                },
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Enter Product Price',
                 ),
               ),
+
               SizedBox(
                 height: 30,
               ),
               TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter Product Quantity';
+                  } else if (int.tryParse(value) == null) {
+                    return 'Enter a valid quantity';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  _productProvider.getFromData(quantity: int.parse(value));
+                },
+                keyboardType:
+                    TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Enter Product Quantity',
                 ),
               ),
+
               SizedBox(
                 height: 30,
               ),
@@ -138,7 +160,7 @@ class _GeneralScreenState extends State<GeneralScreen> with AutomaticKeepAliveCl
                   ),
                   if (_productProvider.productData['scheduleData'] != null)
                   Text(
-                    
+
                     formatedDate(
                       _productProvider.productData['scheduleDate'],
                     ),
