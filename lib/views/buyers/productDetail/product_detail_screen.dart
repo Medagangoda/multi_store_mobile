@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   int _imageIndex = 0;
+  String? _selectedSize;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,6 +156,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ],
               ),
             ),
+            SizedBox(height: 10,),
             ExpansionTile(
               title: Text(
                 'Availbale Size',
@@ -168,7 +173,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       return Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              _selectedSize = widget.productData['sizeList'][index];
+                            });
+                            print(_selectedSize);
+                          },
                           child: Text(
                             widget.productData['sizeList'][index],
                           ),
@@ -177,10 +187,44 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     },
                     
                   ),
-                )
+                ),
+                SizedBox(height: 30,)
               ],
             )
           ],
+        ),
+      ),
+      
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.yellow.shade800,
+            borderRadius: BorderRadius.circular(10,)
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  CupertinoIcons.cart,color: Colors.white,size: 22,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('ADD TO CART',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: 2
+                ),),
+              )
+            ],
+          ),
         ),
       ),
     );
