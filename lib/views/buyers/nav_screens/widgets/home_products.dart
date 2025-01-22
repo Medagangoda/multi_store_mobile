@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_mobile/views/buyers/productDetail/product_detail_screen.dart';
 
 class HomeProductWidget extends StatelessWidget {
   final String categoryName;
@@ -29,44 +30,52 @@ class HomeProductWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final productData = snapshot.data!.docs[index];
-                return Card(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 170,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              productData['imageUrl'][0],
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) {
+                      return ProductDetailScreen(productData: productData,);
+                    }));
+                  },
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 170,
+                          width: 180,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                productData['imageUrl'][0],
+                              ),
+                              fit: BoxFit.cover,
                             ),
-                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          productData['productName'],
-                          style: TextStyle(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            productData['productName'],
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 4),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '\Rs.${productData['productPrice'].toString()}',
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              letterSpacing: 4),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '\Rs.${productData['productPrice'].toString()}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 4,
-                            color: Colors.yellow.shade800
+                              letterSpacing: 4,
+                              color: Colors.yellow.shade800
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
