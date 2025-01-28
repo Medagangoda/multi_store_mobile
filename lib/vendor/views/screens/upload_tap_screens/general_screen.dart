@@ -143,30 +143,30 @@ class _GeneralScreenState extends State<GeneralScreen>
                       borderRadius: BorderRadius.circular(10),
                     )),
               ),
-              Row(
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(5000))
-                          .then((value) {
-                        _productProvider.getFromData(scheduleDate: value);
-                      });
-                    },
-                    child: Text('Schedule'),
-                  ),
-                  if (_productProvider.productData['scheduleData'] != null)
-                  Text(
+              // Row(
+              //   children: [
+              //     TextButton(
+              //       onPressed: () {
+              //         showDatePicker(
+              //                 context: context,
+              //                 initialDate: DateTime.now(),
+              //                 firstDate: DateTime.now(),
+              //                 lastDate: DateTime(5000))
+              //             .then((value) {
+              //           _productProvider.getFromData(scheduleDate: value);
+              //         });
+              //       },
+              //       child: Text('Schedule'),
+              //     ),
+              //     if (_productProvider.productData['scheduleData'] != null)
+              //     Text(
 
-                    formatedDate(
-                      _productProvider.productData['scheduleDate'],
-                    ),
-                  ),
-                ],
-              ),
+              //       formatedDate(
+              //         _productProvider.productData['scheduleDate'],
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),

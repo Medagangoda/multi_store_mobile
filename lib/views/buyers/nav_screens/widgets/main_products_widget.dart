@@ -2,17 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_mobile/views/buyers/productDetail/product_detail_screen.dart';
 
-class HomeProductWidget extends StatelessWidget {
-  final String categoryName;
-
-  const HomeProductWidget({super.key, required this.categoryName});
-
+class MainProductsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> _productsStream = FirebaseFirestore.instance
-        .collection('product')
-        .where('category', isEqualTo: categoryName)
-        .snapshots();
+    final Stream<QuerySnapshot> _productsStream =
+        FirebaseFirestore.instance.collection('product').snapshots();
     return StreamBuilder<QuerySnapshot>(
       stream: _productsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -21,7 +15,11 @@ class HomeProductWidget extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading......");
+          return Center(
+            child: LinearProgressIndicator(
+              color: Colors.yellow.shade800,
+            ),
+          );
         }
 
         return Container(
@@ -32,9 +30,11 @@ class HomeProductWidget extends StatelessWidget {
                 final productData = snapshot.data!.docs[index];
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) {
-                      return ProductDetailScreen(productData: productData,);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ProductDetailScreen(
+                        productData: productData,
+                      );
                     }));
                   },
                   child: Card(
@@ -67,11 +67,10 @@ class HomeProductWidget extends StatelessWidget {
                           child: Text(
                             '\Rs.${productData['productPrice'].toString()}',
                             style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 4,
-                              color: Colors.yellow.shade800
-                            ),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 4,
+                                color: Colors.yellow.shade800),
                           ),
                         ),
                       ],

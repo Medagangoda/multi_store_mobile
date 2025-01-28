@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_mobile/provider/cart_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final dynamic productData;
@@ -24,9 +26,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _imageIndex = 0;
   String? _selectedSize;
 
-
   @override
   Widget build(BuildContext context) {
+    final CartProvider _cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -156,7 +158,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             ExpansionTile(
               title: Text(
                 'Availbale Size',
@@ -167,7 +171,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   height: 40,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    
                     itemCount: widget.productData['sizeList'].length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -175,7 +178,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         child: OutlinedButton(
                           onPressed: () {
                             setState(() {
-                              _selectedSize = widget.productData['sizeList'][index];
+                              _selectedSize =
+                                  widget.productData['sizeList'][index];
                             });
                             print(_selectedSize);
                           },
@@ -185,45 +189,63 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       );
                     },
-                    
                   ),
                 ),
-                SizedBox(height: 30,)
+                SizedBox(
+                  height: 30,
+                )
               ],
             )
           ],
         ),
       ),
-      
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.yellow.shade800,
-            borderRadius: BorderRadius.circular(10,)
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  CupertinoIcons.cart,color: Colors.white,size: 22,
+        child: InkWell(
+          onTap: () {
+            _cartProvider.addProductToCart(
+                widget.productData['productName'],
+                widget.productData['productId'],
+                widget.productData['imageUrl'],
+                1,
+                widget.productData['quantity'],
+                widget.productData['productPrice'],
+                widget.productData['vendorId'],
+                _selectedSize!,
+                widget.productData['scheduleDate']);
+          },
+          child: Container(
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: Colors.yellow.shade800,
+                borderRadius: BorderRadius.circular(
+                  10,
+                )),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    CupertinoIcons.cart,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('ADD TO CART',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  letterSpacing: 2
-                ),),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'ADD TO CART',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        letterSpacing: 2),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
