@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_mobile/provider/cart_provider.dart';
+import 'package:multi_store_mobile/utils/show_snackBar.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -203,16 +204,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
           onTap: () {
-            _cartProvider.addProductToCart(
-                widget.productData['productName'],
-                widget.productData['productId'],
-                widget.productData['imageUrl'],
-                1,
-                widget.productData['quantity'],
-                widget.productData['productPrice'],
-                widget.productData['vendorId'],
-                _selectedSize!,
-                widget.productData['scheduleDate']);
+            if (_selectedSize == null) {
+              return showSnack(context, 'Please select a Size');
+            } else {
+              _cartProvider.addProductToCart(
+                  widget.productData['productName'],
+                  widget.productData['productId'],
+                  widget.productData['imageUrl'],
+                  1,
+                  widget.productData['quantity'],
+                  widget.productData['productPrice'],
+                  widget.productData['vendorId'],
+                  _selectedSize!,
+                  widget.productData['scheduleDate']);
+            }
           },
           child: Container(
             height: 50,

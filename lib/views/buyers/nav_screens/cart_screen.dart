@@ -14,12 +14,22 @@ class CartScreen extends StatelessWidget {
         backgroundColor: Colors.yellow.shade900,
         elevation: 0,
         title: Text(
-          'Cart Screen',style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 4,
-            color: Colors.white
-          ),
+          'Cart Screen',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 4,
+              color: Colors.white),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _cartProvider.removeAllItem();
+            },
+            icon: Icon(
+              CupertinoIcons.delete,
+            ),
+          ),
+        ],
       ),
       body: ListView.builder(
           shrinkWrap: true,
@@ -38,66 +48,86 @@ class CartScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            cartData.productName,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 5),
-                          ),
-                          Text(
-                            '\Rs.' + '' + cartData.price.toStringAsFixed(2),
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 5,
-                                color: Colors.yellow.shade800),
-                          ),
-
-                          OutlinedButton(
-                            onPressed: null,
-                            child: Text(
-                            cartData.productSize,
-                          ),
-                          ),
-
-                          Container(
-                            height: 34,
-                            width: 120,
-                            decoration: BoxDecoration(
-                              color: Colors.yellow.shade800,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              cartData.productName,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 5),
                             ),
-                            child: Row(
+                            Text(
+                              '\Rs.' + '' + cartData.price.toStringAsFixed(2),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 5,
+                                  color: Colors.yellow.shade800),
+                            ),
+                            OutlinedButton(
+                              onPressed: null,
+                              child: Text(
+                                cartData.productSize,
+                              ),
+                            ),
+                            Row(
                               children: [
+                                Container(
+                                  height: 40,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    color: Colors.yellow.shade800,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: cartData.quantity == 1
+                                            ? null
+                                            : () {
+                                                _cartProvider
+                                                    .decreaMent(cartData);
+                                              },
+                                        icon: Icon(
+                                          CupertinoIcons.minus,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        cartData.quantity.toString(),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      IconButton(
+                                          onPressed: cartData.productQuantity ==
+                                                  cartData.quantity
+                                              ? null
+                                              : () {
+                                                  _cartProvider
+                                                      .increament(cartData);
+                                                },
+                                          icon: Icon(
+                                            CupertinoIcons.plus,
+                                            color: Colors.white,
+                                          ))
+                                    ],
+                                  ),
+                                ),
                                 IconButton(
-                                  onPressed: cartData.quantity ==1 ? null : () {
-                                    _cartProvider.decreaMent(cartData);
+                                  onPressed: () {
+                                    _cartProvider.removeItem(
+                                      cartData.productId,
+                                    );
                                   },
                                   icon: Icon(
-                                    CupertinoIcons.minus,
-                                    color: Colors.white,
+                                    CupertinoIcons.cart_badge_minus,
                                   ),
-                                  ),
-                                  Text(
-                                    cartData.quantity.toString(),
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  IconButton(
-                                    onPressed: cartData.productQuantity == cartData.quantity? null:() {
-                                      _cartProvider.increament(cartData);
-                                    },
-                                    icon: Icon(
-                                      CupertinoIcons.plus,
-                                      color: Colors.white,
-                                    )
-                                    )
+                                )
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -137,6 +167,31 @@ class CartScreen extends StatelessWidget {
       //     ],
       //   ),
       // ),
+
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 50,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.yellow.shade800,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              'Rs.' +
+                  _cartProvider.totalPrice.toStringAsFixed(2) +
+                  " - " +
+                  'CHECKOUT',
+              style: TextStyle(
+                  color: Colors.white,
+                  letterSpacing: 5,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

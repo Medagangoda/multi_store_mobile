@@ -9,8 +9,16 @@ class CartProvider with ChangeNotifier {
 
   Map<String, CartAttr> get getCartItem{
     return _cartItems;
+  }
 
+  double get totalPrice {
+    var total = 0.0;
 
+    _cartItems.forEach((key, value) {
+      total += value.price* value.quantity;
+    });
+
+    return total;
   }
 
   void addProductToCart (
@@ -64,6 +72,18 @@ class CartProvider with ChangeNotifier {
 
   void decreaMent(CartAttr cartAttr) {
     cartAttr.decrease();
+
+    notifyListeners();
+  }
+
+  removeItem(productId) {
+    _cartItems.remove(productId);
+
+    notifyListeners();
+  }
+
+  removeAllItem() {
+    _cartItems.clear();
 
     notifyListeners();
   }
