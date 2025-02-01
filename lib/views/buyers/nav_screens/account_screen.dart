@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_mobile/views/buyers/auth/login_screen.dart';
 
 class AccountScreen extends StatelessWidget {
-  const AccountScreen({super.key});
+  final  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('buyers');
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(FirebaseAuth.instance.currentUser!.uid).get(),
+      
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -54,9 +56,7 @@ class AccountScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-
-                    data['fullname'],
+                  child: Text(data['fullname'],
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -86,12 +86,23 @@ class AccountScreen extends StatelessWidget {
                   leading: Icon(Icons.shop),
                   title: Text('Cart'),
                 ),
+                 ListTile(
+                  onTap: () async{
+                    await _auth.signOut().whenComplete(() {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return LoginScreen();
+                      }));
+                    });
+                  },
+                  leading: Icon(Icons.logout),
+                  title: Text('Logout'),
+                ),
               ],
             ),
           );
         }
 
-        return CircularProgressIndicator();
+        return Center(child: CircularProgressIndicator());
       },
     );
   }

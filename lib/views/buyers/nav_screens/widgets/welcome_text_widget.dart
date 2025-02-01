@@ -13,7 +13,7 @@ class WelcomeText extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('What are you \n looking for 👀', 
+          Text('කුළු අමා . Lk 🚽', 
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,

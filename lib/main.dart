@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:multi_store_mobile/provider/cart_provider.dart';
 import 'package:multi_store_mobile/provider/product_provider.dart';
 import 'package:multi_store_mobile/vendor/views/screens/main_vendor_screen.dart';
+import 'package:multi_store_mobile/views/buyers/auth/login_screen.dart';
 import 'package:multi_store_mobile/views/buyers/auth/register_screen.dart';
 import 'package:multi_store_mobile/views/buyers/main_screen.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ void main() async {
   //             storageBucket: 'gs://my-app-d3932.firebasestorage.app'),
   //       )
   //     : 
-  //
+  
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [

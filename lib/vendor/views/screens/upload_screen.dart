@@ -53,9 +53,8 @@ class UploadScreen extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Colors.yellow.shade800, // Text color
+                backgroundColor: Colors.yellow.shade800, 
                 shape: RoundedRectangleBorder(
-                  // Optional: for rounded corners
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -81,10 +80,12 @@ class UploadScreen extends StatelessWidget {
                     'brandName': _productProvider.productData['brandName'],
                     'sizeList': _productProvider.productData['sizeList'],
                     'vendorId' :FirebaseAuth.instance.currentUser!.uid,
+                    'approved': false,
                   }) .whenComplete(() {
-                    EasyLoading.dismiss();
+                    
                     _productProvider.clearData();
                     _formkey.currentState!.reset();
+                    EasyLoading.dismiss();
 
                     Navigator.push(context, 
                     

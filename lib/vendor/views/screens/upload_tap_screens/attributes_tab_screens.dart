@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:multi_store_mobile/provider/product_provider.dart';
@@ -9,9 +9,10 @@ class AttributesTabScreens extends StatefulWidget {
   State<AttributesTabScreens> createState() => _AttributesTabScreensState();
 }
 
-class _AttributesTabScreensState extends State<AttributesTabScreens> with AutomaticKeepAliveClientMixin {
+class _AttributesTabScreensState extends State<AttributesTabScreens>
+    with AutomaticKeepAliveClientMixin {
   @override
-  bool get wantKeepAlive => true; //keeping data in screen
+  bool get wantKeepAlive => true;
   final TextEditingController _sizeController = TextEditingController();
   bool _entered = false;
 
@@ -127,11 +128,9 @@ class _AttributesTabScreensState extends State<AttributesTabScreens> with Automa
                 });
               },
               child: Text(
-                _isSAVE? 'SAVE' : 'save',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 3
-                ),),
+                _isSAVE ? 'SAVE' : 'save',
+                style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 3),
+              ),
             ),
         ],
       ),
