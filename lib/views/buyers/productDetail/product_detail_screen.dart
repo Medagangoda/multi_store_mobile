@@ -176,16 +176,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: OutlinedButton(
-                          onPressed: () {
-                            setState(() {
-                              _selectedSize =
-                                  widget.productData['sizeList'][index];
-                            });
-                            print(_selectedSize);
-                          },
-                          child: Text(
-                            widget.productData['sizeList'][index],
+                        child: Container(
+                          color: _selectedSize ==
+                                  widget.productData['sizeList'][index]
+                              ? Colors.yellow.shade100
+                              : null,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                _selectedSize =
+                                    widget.productData['sizeList'][index];
+                              });
+                              print(_selectedSize);
+                            },
+                            child: Text(
+                              widget.productData['sizeList'][index],
+                            ),
                           ),
                         ),
                       );
@@ -203,27 +209,35 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
-          onTap: () {
-            if (_selectedSize == null) {
-              return showSnack(context, 'Please select a Size');
-            } else {
-              _cartProvider.addProductToCart(
-                  widget.productData['productName'],
-                  widget.productData['productId'],
-                  widget.productData['imageUrl'],
-                  1,
-                  widget.productData['quantity'],
-                  widget.productData['productPrice'],
-                  widget.productData['vendorId'],
-                  _selectedSize!,
-                  widget.productData['scheduleDate']);
-            }
-          },
+          onTap: _cartProvider.getCartItem
+                  .containsKey(widget.productData['productId'])
+              ? null
+              : () {
+                  if (_selectedSize == null) {
+                    return showSnack(context, 'Please select a Size');
+                  } else {
+                    _cartProvider.addProductToCart(
+                        widget.productData['productName'],
+                        widget.productData['productId'],
+                        widget.productData['imageUrl'],
+                        1,
+                        widget.productData['quantity'],
+                        widget.productData['productPrice'],
+                        widget.productData['vendorId'],
+                        _selectedSize!,
+                        widget.productData['scheduleDate']);
+
+                        return showSnack(context, 'YOU ADDED ${widget.productData['productName']} TO YOUR CART');
+                  }
+                },
           child: Container(
             height: 50,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                color: Colors.yellow.shade800,
+                color: _cartProvider.getCartItem
+                        .containsKey(widget.productData['productId'])
+                    ? Colors.grey
+                    : Colors.yellow.shade800,
                 borderRadius: BorderRadius.circular(
                   10,
                 )),
@@ -240,14 +254,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'ADD TO CART',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        letterSpacing: 2),
-                  ),
+                  child: _cartProvider.getCartItem
+                          .containsKey(widget.productData['productId'])
+                      ? Text(
+                          'IN CART',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              letterSpacing: 2),
+                        )
+                      : Text(
+                          'ADD TO CART',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              letterSpacing: 2),
+                        ),
                 )
               ],
             ),

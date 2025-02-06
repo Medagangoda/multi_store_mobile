@@ -15,18 +15,14 @@ class AuthController {
   _uploadProfileImageToStorage(Uint8List image) async {
    Reference ref =  _storage.ref().child('profilePics').child(_auth.currentUser!.uid);
 
-   UploadTask uploadTask = ref.putData(image!);
+   UploadTask uploadTask = ref.putData(image);
 
    TaskSnapshot snapshot = await uploadTask;
    String downloadUrl = await snapshot.ref.getDownloadURL();
 
    return downloadUrl;
   }
-
-
-
-
-  pickProfileImage(ImageSource sourse) async  {
+pickProfileImage(ImageSource sourse) async  {
     final ImagePicker _imagePicker = ImagePicker();
 
     XFile? _file = await _imagePicker.pickImage(source: sourse);
@@ -37,11 +33,7 @@ class AuthController {
       print('No Image Selected');
     }
   } 
-
-
-
-
-  Future<String> SignUpUsers(String email, String fullName, String phoneNumber,
+Future<String> SignUpUsers(String email, String fullName, String phoneNumber,
       String password, Uint8List? image) async {
     String res = 'some reeor occured';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_mobile/provider/cart_provider.dart';
+import 'package:multi_store_mobile/views/buyers/inner_screens/checkout_screen.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
@@ -170,24 +171,35 @@ class CartScreen extends StatelessWidget {
 
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 50,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.yellow.shade800,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Text(
-              'Rs.' +
-                  _cartProvider.totalPrice.toStringAsFixed(2) +
-                  " - " +
-                  'CHECKOUT',
-              style: TextStyle(
-                  color: Colors.white,
-                  letterSpacing: 5,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => CheckoutScreen(),
+              ),
+            );
+          },
+          child: Container(
+            height: 50,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: _cartProvider.totalPrice == 0.00
+                  ? Colors.grey
+                  : Colors.yellow.shade800,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                'Rs.' +
+                    _cartProvider.totalPrice.toStringAsFixed(2) +
+                    " - " +
+                    'CHECKOUT',
+                style: TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 5,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
