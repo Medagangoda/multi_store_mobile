@@ -12,6 +12,7 @@ class AllProductsScreen extends StatelessWidget {
     final Stream<QuerySnapshot> _productStream = FirebaseFirestore.instance
         .collection('product')
         .where('category', isEqualTo: categoryData['categoryName'])
+        .where('approved', isEqualTo: true)
         .snapshots();
 
     return Scaffold(

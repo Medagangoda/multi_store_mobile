@@ -83,7 +83,9 @@ class UploadScreen extends StatelessWidget {
                     'approved': false,
                   }) .whenComplete(() {
                     
+                    
                     _productProvider.clearData();
+                    
                     _formkey.currentState!.reset();
                     EasyLoading.dismiss();
 

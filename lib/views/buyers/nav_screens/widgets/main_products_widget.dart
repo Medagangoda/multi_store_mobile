@@ -5,8 +5,10 @@ import 'package:multi_store_mobile/views/buyers/productDetail/product_detail_scr
 class MainProductsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> _productsStream =
-        FirebaseFirestore.instance.collection('product').snapshots();
+    final Stream<QuerySnapshot> _productsStream = FirebaseFirestore.instance
+        .collection('product')
+        .where('approved', isEqualTo: true) // approved eq to dashboard edite-------
+        .snapshots();
     return StreamBuilder<QuerySnapshot>(
       stream: _productsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -34,7 +36,7 @@ class MainProductsWidget extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               var productData = snapshot.data!.docs[index];
-          
+
               return GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {

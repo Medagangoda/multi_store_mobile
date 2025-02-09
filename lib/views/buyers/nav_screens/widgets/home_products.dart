@@ -12,6 +12,7 @@ class HomeProductWidget extends StatelessWidget {
     final Stream<QuerySnapshot> _productsStream = FirebaseFirestore.instance
         .collection('product')
         .where('category', isEqualTo: categoryName)
+        .where('approved', isEqualTo: true)
         .snapshots();
     return StreamBuilder<QuerySnapshot>(
       stream: _productsStream,
@@ -32,9 +33,11 @@ class HomeProductWidget extends StatelessWidget {
                 final productData = snapshot.data!.docs[index];
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) {
-                      return ProductDetailScreen(productData: productData,);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ProductDetailScreen(
+                        productData: productData,
+                      );
                     }));
                   },
                   child: Card(
@@ -67,11 +70,10 @@ class HomeProductWidget extends StatelessWidget {
                           child: Text(
                             '\Rs.${productData['productPrice'].toString()}',
                             style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 4,
-                              color: Colors.yellow.shade800
-                            ),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 4,
+                                color: Colors.yellow.shade800),
                           ),
                         ),
                       ],
