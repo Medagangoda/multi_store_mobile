@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:multi_store_mobile/provider/cart_provider.dart';
+import 'package:multi_store_mobile/views/buyers/inner_screens/edit_profile.dart';
 import 'package:multi_store_mobile/views/buyers/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -107,7 +108,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 }),
             bottomSheet: data['address'] == ''
                 ? TextButton(
-                    onPressed: () {}, child: Text('enter billing address'))
+                    onPressed: () {
+                      Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) {
+                      return EditProfileScreen(
+                        userData: data,
+                        );
+                    })).whenComplete((){
+                      Navigator.pop(context);
+                    });
+                    }, child: Text('enter billing address'))
                 : Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: InkWell(
@@ -124,7 +134,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             'address': data['address'],
                             'buyerId': data['buyerId'],
                             'fullName': data['fullName'],
-                            'buyerPhoto': data['profile Image'],
+                            'buyerPhoto': data['profileImage'],
                             'productName': item.productName,
                             'productPrice': item.price,
                             'productId': item.productId,
