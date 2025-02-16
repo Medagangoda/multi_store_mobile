@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:multi_store_mobile/provider/cart_provider.dart';
 import 'package:multi_store_mobile/provider/product_provider.dart';
 import 'package:multi_store_mobile/vendor/controllers/vendor_register_controller.dart';
+import 'package:multi_store_mobile/vendor/views/auth/vendor_auth.dart';
 import 'package:multi_store_mobile/vendor/views/auth/vendor_registration_screen.dart';
 import 'package:multi_store_mobile/vendor/views/screens/main_vendor_screen.dart';
 import 'package:multi_store_mobile/vendor/views/screens/vendor_order_screen.dart';
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Brand-Bold',
       ),
-      home: MainScreen(),
+      home: VendorAuthScreen(),
       builder: EasyLoading.init(),
     );
   }
