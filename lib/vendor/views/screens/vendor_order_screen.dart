@@ -99,52 +99,52 @@ class VendorOrderScreen extends StatelessWidget {
                               child: Image.network(document['productImage'][0]),
                             ),
                             title: Text(document['productName']),
-                            subtitle: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      ('Quantity'),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(document['quantity'].toString())
-                                  ],
-                                ),
-                                document['accepted'] == true
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text('Schedule Delivery Date'),
-                                          Text(formatedDate(
-                                              document['scheduleData']
-                                                  .toDate()))
-                                        ],
-                                      )
-                                    : Text(''),
-                                ListTile(
-                                  title: Text(
-                                    'Buyer Details',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  subtitle: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(document['fullName']),
-                                      Text(document['email']),
-                                      Text(document['address']),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                            // subtitle: Column(
+                            //   mainAxisAlignment: MainAxisAlignment.start,
+                            //   children: [
+                            //     Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceAround,
+                            //       children: [
+                            //         Text(
+                            //           ('Quantity'),
+                            //           style: TextStyle(
+                            //               fontSize: 14,
+                            //               fontWeight: FontWeight.bold),
+                            //         ),
+                            //         Text(document['quantity'].toString())
+                            //       ],
+                            //     ),
+                            //     document['accepted'] == true
+                            //         ? Row(
+                            //             mainAxisAlignment:
+                            //                 MainAxisAlignment.spaceEvenly,
+                            //             children: [
+                            //               Text('Schedule Delivery Date'),
+                            //               Text(formatedDate(
+                            //                   document['scheduleData']
+                            //                       .toDate()))
+                            //             ],
+                            //           )
+                            //         : Text(''),
+                            //     ListTile(
+                            //       title: Text(
+                            //         'Buyer Details',
+                            //         style: TextStyle(fontSize: 18),
+                            //       ),
+                            //       subtitle: Column(
+                            //         mainAxisAlignment: MainAxisAlignment.start,
+                            //         crossAxisAlignment:
+                            //             CrossAxisAlignment.start,
+                            //         children: [
+                            //           Text(document['fullName']),
+                            //           Text(document['email']),
+                            //           Text(document['address']),
+                            //         ],
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
                           )
                         ],
                       ),
