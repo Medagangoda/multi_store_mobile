@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_mobile/vendor/views/screens/vendor_inner_screen/withdrawal_screen.dart';
 
 class EaringScreen extends StatelessWidget {
   const EaringScreen({super.key});
@@ -142,6 +143,35 @@ class EaringScreen extends StatelessWidget {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, 
+                              MaterialPageRoute(builder: (context) {
+                                return WithdrawalScreen();
+                              })
+                              );
+                            },
+                            child: Container(
+                              height: 40,
+                              width: MediaQuery.of(context).size.width-40,
+                            
+                              decoration: BoxDecoration(
+                                color: Colors.yellow.shade800,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "WithDraw",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 6
+                                  ),
+                                ),
+                              ),
                             ),
                           )
                         ],
