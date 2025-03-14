@@ -23,7 +23,22 @@ class UnpublishedTab extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.yellow.shade800,
+              ),
+            );
+          }
+
+          if (snapshot.data!.docs.isEmpty) {
+            return Center(
+                child: Text(
+              'No Unpublish product',
+              style: TextStyle(
+                fontSize: 25, 
+                fontWeight: FontWeight.bold
+                ),
+            ));
           }
 
           return Container(
@@ -101,7 +116,7 @@ class UnpublishedTab extends StatelessWidget {
                               await _firestore
                                   .collection('product')
                                   .doc(vendorProductData['productId'])
-                                 .delete();
+                                  .delete();
                             },
                             backgroundColor: Colors.red,
                             foregroundColor: Colors.white,

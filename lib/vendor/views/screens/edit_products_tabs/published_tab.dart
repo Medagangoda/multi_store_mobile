@@ -24,7 +24,24 @@ class PublishedTab extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.yellow.shade800,
+              ),
+            );
+          }
+
+          if(snapshot.data!.docs.isEmpty){
+            return Center(
+              child: Text(
+                'No Publish product',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
           }
 
           return Container(
