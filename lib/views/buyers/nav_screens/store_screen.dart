@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_mobile/views/buyers/productDetail/store_detail_screen.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
@@ -18,7 +19,11 @@ class StoreScreen extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Center(
+              child: CircularProgressIndicator(
+                color: Colors.yellow.shade800,
+              ),
+            );
         }
 
         return Container(
@@ -27,13 +32,22 @@ class StoreScreen extends StatelessWidget {
             itemCount: snapshot.data!.size,
             itemBuilder: (context, index) {
               final storeData = snapshot.data!.docs[index];
-              return ListTile(
-                title: Text(storeData['bussinessName']),
-                subtitle: Text(storeData['countryValue']),
-
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    storeData['storeImage']
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) {
+                    return StoreDetailScreen(storeData: storeData,);
+                  })
+                  );
+                },
+                child: ListTile(
+                  title: Text(storeData['bussinessName']),
+                  subtitle: Text(storeData['countryValue']),
+                
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      storeData['storeImage']
+                    ),
                   ),
                 ),
               );
